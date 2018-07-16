@@ -61,3 +61,19 @@ app.post('/channels', (req, res) => {
   res.header('Content-Type', 'application/json; charset=utf-8');
   res.status(201).json({result: 'ok'});
 });
+
+// RealtimeDatastoreからチャンネル名を取得し、一覧をJSONで返す
+// データを読み出す時はvalueイベントを使う
+// 1回だけコールバック .once
+app.get('/channels', (req, res) => {
+  let channelsRef = admin.database().ref('channels');
+  channelsRef.once('value', function(snapshot) {
+    let items = new Array();
+    snapshot.forEach(function(childSnapshot) {
+      let cname = childSnapshot.key;
+      items.push(cname);
+    });
+    res.header('Content-Type', 'application/json; charset=utf-8');
+    res.send({channels: items});
+  });
+});
