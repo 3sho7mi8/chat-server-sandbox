@@ -5,6 +5,7 @@ const functions = require('firebase-functions');
 // Firebase Admin SDK
 // Realtime Databaseの処理および認証をするために使用
 const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -45,7 +46,7 @@ function createChannel(cname){
         "body" : "はじめてのメッセージを投稿してみましょう。",
         "date" : "${date2.toJSON()}",
         "user" : {
-          "avatar" : "".
+          "avatar" : "",
           "id" : "robot",
           "name" : "Robot"
         }
@@ -120,3 +121,6 @@ app.post('/reset', (req, res) => {
   res.header('Content-Type', 'application/json; charset=utf-8');
   res.status(201).send({result: 'ok'});
 });
+
+
+exports.v1 = functions.https.onRequest(app);
