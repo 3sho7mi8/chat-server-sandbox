@@ -111,3 +111,12 @@ app.get('/channels/:cname/messages', (req, res) => {
     res.send({messages: items});
   });
 });
+
+
+// 初期状態に戻すAPI（開発用）
+app.post('/reset', (req, res) => {
+  createChannel('general');
+  createChannel('random');
+  res.header('Content-Type', 'application/json; charset=utf-8');
+  res.status(201).send({result: 'ok'});
+});
